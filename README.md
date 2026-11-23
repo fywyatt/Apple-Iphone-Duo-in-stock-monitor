@@ -14,7 +14,7 @@ Use **Default first check second of minute** to delay the first check when start
 
 Enable **Automatic recovery** on the overview to review the logs every 10 minutes. Three consecutive HTTP 541 errors for any monitored ZIP pause checks for 10 minutes. The dashboard shows the pause and resume events, which are also logged. After resuming, only fresh checks count toward the next pause. Click **Turn off automatic recovery** to stop the schedule. If checks were paused for recovery, use **Start checks** when you want to resume.
 
-On macOS, turn on **iPhone Duo Mac alerts** in the overview. A new iPhone Duo restock at an alert store opens the Apple Shopping Bag in Google Chrome and shows the color and store in a macOS notification. Use the Chrome profile where you saved your bag. This requires Google Chrome. The first alert may ask you to allow notifications from Script Editor. Choose **Turn off Mac alerts** to disable both actions.
+On macOS, turn on **iPhone Duo Mac alerts** in the overview. A new iPhone Duo restock at an alert store opens the Apple Shopping Bag in your default browser and shows the color and store in a macOS notification. **Your bag must be in your default browser.** Before monitoring, sign in to your Apple Account and add the products to your bag in that browser. Otherwise, the alert opens an empty bag. To change the default browser, open **System Settings → Desktop & Dock → Default web browser**. The first alert may ask you to allow notifications from Script Editor. Choose **Turn off Mac alerts** to disable both actions.
 
 Keep the launcher window open while monitoring. You can close and reopen the browser tab. Closing the launcher window stops monitoring. A machine that goes to sleep or disconnects can miss stock changes.
 

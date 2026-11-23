@@ -153,10 +153,10 @@ def export_stock_history():
 
 
 def show_duo_restock(zip_code, matches):
-    """Open the bag and display a native notification in the logged-in Mac session."""
+    """Open the bag in the default browser and display a native notification in the logged-in Mac session."""
     body = "\n".join(f"{color} · {name}" for color, name in sorted(matches))
     commands = (
-        ("Chrome", ["/usr/bin/open", "-b", "com.google.Chrome", APPLE_BAG_URL], None),
+        ("the default browser", ["/usr/bin/open", APPLE_BAG_URL], None),
         ("macOS notification", ["/usr/bin/osascript", "-", f"iPhone Duo in stock near {zip_code}", body],
          """on run argv
            display notification (item 2 of argv) with title (item 1 of argv)
