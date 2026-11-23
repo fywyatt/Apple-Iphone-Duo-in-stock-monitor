@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+dashboard_settings.json
+email_settings.ini
+monitor.sqlite3*
+monitor.log
+stock_history.csv
+.DS_Store

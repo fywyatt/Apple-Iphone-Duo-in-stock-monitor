@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="monitor-token" content="__MONITOR_TOKEN__">
+  <title>Apple Stock Monitor</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="brand"><span class="logo" aria-hidden="true"><i></i></span><span>Stock Monitor<small>Apple Store pickup</small></span></div>
+      <nav aria-label="Dashboard">
+        <button class="nav-button active" data-page="overview"><span aria-hidden="true">◉</span> Overview</button>
+        <button class="nav-button" data-page="checks"><span aria-hidden="true">≡</span> Check log</button>
+        <button class="nav-button" data-page="restocks"><span aria-hidden="true">↻</span> Restock history</button>
+        <button class="nav-button" id="settings"><span aria-hidden="true">⚙</span> Settings</button>
+      </nav>
+      <div class="local"><span class="dot"></span> Local dashboard</div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div><p class="eyebrow" id="section">MONITOR</p><h1 id="title">Stock overview</h1></div>
+        <div class="controls"><span class="pill" id="status">Connecting</span><button class="button secondary" id="toggle" disabled>Pause checks</button></div>
+      </header>
+      <p id="notice" role="status" hidden></p>
+      <section id="overview">
+        <div class="metrics" aria-label="Monitor activity">
+          <article><span>Default interval · seconds</span><strong id="interval">—</strong></article>
+          <article><span>ZIP codes</span><strong id="zip-count">—</strong></article>
+          <article><span>Successful checks · 24h</span><strong id="success-count">—</strong></article>
+          <article><span>Check errors · 24h</span><strong id="error-count">—</strong></article>
+        </div>
+        <section class="section-header recovery-panel" aria-labelledby="recovery-title">
+          <div><h2 id="recovery-title">Automatic recovery</h2>
+            <p id="recovery-status" role="status">Checking recovery settings…</p>
+          </div>
+          <button class="button secondary" id="recovery-toggle" disabled>Turn on automatic recovery</button>
+        </section>
+        <section class="section-header recovery-panel" id="desktop-alerts-panel" aria-labelledby="desktop-alerts-title" hidden>
+          <div><h2 id="desktop-alerts-title">iPhone Duo Mac alerts</h2>
+            <p>Open your Apple Shopping Bag in Chrome and show the restocked color in a Mac notification.</p>
+          </div>
+          <button class="button secondary" id="desktop-alerts-toggle" disabled>Turn on Mac alerts</button>
+        </section>
+        <div class="section-header"><div><h2>Monitored areas</h2><p>Latest pickup check for each ZIP code</p></div></div>
+        <div class="areas" id="areas"></div>
+        <section aria-labelledby="lists-title">
+          <div class="section-header"><h2 id="lists-title">Monitoring lists</h2><button class="button secondary" id="new-list">Add list</button></div>
+          <ul id="watch-summary" aria-label="Monitoring lists"></ul>
+        </section>
+        <div class="folder-foot"><span>Working folder</span><code id="working-folder">—</code></div>
+      </section>
+      <section id="history" hidden>
+        <div class="section-header history-tools"><p id="history-description"></p>
+          <div class="controls"><label class="filter-label">ZIP code <select id="zip-filter"></select></label><button class="button secondary" id="download" hidden>Download CSV</button></div>
+        </div>
+        <figure id="timeline" hidden>
+          <figcaption><strong>Restock timeline</strong><small>First to last in-stock observation on this page · Pacific time</small></figcaption>
+          <div id="timeline-plot"></div>
+        </figure>
+        <div class="table-wrap"><table><thead id="history-head"></thead><tbody id="history-body"></tbody></table></div>
+        <div class="paging" aria-label="History pages">
+          <button class="button secondary" id="newer" disabled>Newer</button>
+          <span id="history-page" aria-live="polite"></span>
+          <button class="button secondary" id="older" disabled>Older</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <dialog id="setup" aria-labelledby="setup-title">
+    <form id="setup-form" novalidate>
+      <header class="dialog-head"><div><p class="eyebrow" id="step-label">STEP 1 OF 3</p><h2 id="setup-title">Set up Stock Monitor</h2></div><button type="button" aria-label="Close setup" class="close" id="cancel">×</button></header>
+      <ol class="steps" aria-label="Settings sections">
+        <li><button type="button" data-edit-step="0">Working folder</button></li>
+        <li><button type="button" data-edit-step="1">Lists &amp; timing</button></li>
+        <li><button type="button" data-edit-step="2">Email sender</button></li>
+      </ol>
+      <div class="step" data-step="0">
+        <h3>Choose a working folder</h3>
+        <p>This is where the monitor keeps its history and email settings. The default folder is ready to use.</p>
+        <label for="folder">Working folder</label>
+        <div class="input-row"><input id="folder" spellcheck="false" required><button type="button" id="browse" class="button secondary">Browse</button></div>
+        <button type="button" class="text-button" id="default-folder">Use default folder</button>
+        <p class="help">To make a new folder, add its name to the end of the path. To reopen old history, choose the folder where it was saved.</p>
+      </div>
+      <div class="step" data-step="1" hidden>
+        <h3>Monitoring lists</h3>
+        <p>Each list has its own ZIP codes and alert recipients. Products can use those recipients or have their own.</p>
+        <div id="watch-editor"></div>
+        <button type="button" class="button secondary" id="add-watch">Add monitoring list</button>
+        <div class="settings-columns">
+          <div>
+            <label for="interval-setting">Default check interval (seconds)</label>
+            <input id="interval-setting" name="interval" type="number" inputmode="numeric" min="1" step="1" required>
+            <p class="help">The default is 60 seconds between checks for each ZIP code.</p>
+          </div>
+          <div>
+            <label for="start-second-setting">Default first check second of minute</label>
+            <input id="start-second-setting" type="number" inputmode="numeric" min="0" max="59" step="1" placeholder="Start immediately" aria-describedby="start-second-help">
+            <p class="help" id="start-second-help">Enter 0–59. For example, 20 starts at the next :20. Later checks follow your interval. Leave blank to start immediately.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step" data-step="2" hidden>
+        <h3>Get an email when stock appears</h3>
+        <p>Set up the sender used by all monitoring lists. Stock checks can run with email alerts disabled. Each recipient gets five emails per product restock alert.</p>
+        <div class="settings-columns">
+          <div>
+            <div class="input-row email-server">
+              <label>SMTP server<input id="smtp_host" spellcheck="false" autocomplete="off" placeholder="smtp.gmail.com"></label>
+              <label>SMTP port<input id="smtp_port" inputmode="numeric" autocomplete="off" placeholder="465"></label>
+            </div>
+          </div>
+          <div>
+            <label for="smtp_user">Sender email</label><input id="smtp_user" type="email" autocomplete="username" placeholder="you@example.com">
+            <label for="smtp_password">App password</label><input id="smtp_password" type="password" autocomplete="new-password">
+            <p class="help" id="password-tip">For Gmail, use an <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noreferrer">app password</a> from the sender’s Google Account. Port 587 uses STARTTLS and port 465 uses implicit TLS.</p>
+          </div>
+        </div>
+
+      </div>
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <footer class="dialog-actions">
+        <button type="button" id="back" class="button secondary">Back</button>
+        <button type="button" id="skip-setup" class="button secondary" hidden>Skip</button>
+        <button type="submit" id="continue" class="button primary">Continue</button>
+      </footer>
+    </form>
+  </dialog>
+  <dialog id="folder-picker" aria-labelledby="picker-title">
+    <div class="dialog-head"><h2 id="picker-title">Choose a folder</h2><button class="close" id="close-picker" aria-label="Close folder picker">×</button></div>
+    <div class="picker-body">
+      <div class="input-row"><button class="button secondary" id="up">Up one level</button><button class="text-button" id="home">Home folder</button></div>
+      <p class="picker-path" id="picker-path"></p>
+      <div id="folder-list"></div>
+      <p class="form-error" id="picker-error" role="alert" hidden></p>
+    </div>
+    <div class="dialog-actions"><button class="button primary" id="use-folder" disabled>Use this folder</button></div>
+  </dialog>
+</body>
+</html>
