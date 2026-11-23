@@ -92,7 +92,7 @@ function paintOverview() {
   const recoveryToggle = get("recovery-toggle");
   recoveryToggle.disabled = !state.zips.length || busy;
   recoveryToggle.textContent = recovery.enabled ? "Turn off automatic recovery" : "Turn on automatic recovery";
-  let recoveryStatus = recovery.enabled ? "Reviews check history every 10 minutes." : "Off";
+  let recoveryStatus = recovery.enabled ? "Reviews check history every 10 minutes. If blocked by Apple, pause for 10 min and then resume." : "Off";
   if (recovery.message) recoveryStatus = recovery.message;
   if (recovery.cooling_down) recoveryStatus += " Next resume at " + timeLabel(recovery.review_at) + ".";
   if (get("recovery-status").textContent !== recoveryStatus) get("recovery-status").textContent = recoveryStatus;
