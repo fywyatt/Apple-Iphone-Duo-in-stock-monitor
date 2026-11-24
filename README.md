@@ -1,5 +1,10 @@
 # Apple Stock Monitor
+**For Human Reader(written by human too)**
 
+
+
+
+**Set up / For Agents**
 Check local Apple Store pickup for iPhone Duo and selected Mac Studio configurations. The dashboard runs in your browser at [localhost:8766](http://localhost:8766).
 
 1. Install [Python 3.11 or later](https://www.python.org/downloads/) if it isn’t already installed. The `python3` that comes with macOS developer tools is too old. On a Mac, after installing from python.org, open **Applications → Python 3.x** and double-click **Install Certificates.command** once. Without this step, Python can’t make secure connections, and every stock check and email fails with a certificate error. Python from Homebrew doesn’t need this step.
