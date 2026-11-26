@@ -1,6 +1,16 @@
 # Apple Stock Monitor
-**For Human Reader(written by human too)**
+## What it does
 
+Apple Stock Monitor watches Apple Store pickup availability for the **iPhone Duo** (Mac Studio monitoring is only partially developed) at the stores you choose near your US ZIP codes. Everything is set up in a browser dashboard on your own computer, so you don't need to write any code. 
+
+When stock appears at one of your stores:
+
+- **Email alerts:** each recipient gets 5 emails, so the alert is hard to miss.
+- **Mac alerts (optional, macOS only):** your Apple Shopping Bag opens in your default browser, and a notification shows the color and store.
+
+**Tip:** Before you start monitoring, add the color you want to your bag in your default browser. Not picky about color? Add both, then remove the one that isn't in stock when the alert arrives. That way you can check out within seconds.
+
+From my own experience in the Bay Area, restocks usually appear in the morning, between about 9 and 11 AM.
 
 
 
